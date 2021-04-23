@@ -53,27 +53,36 @@ const QueryData = (req, res, sql) => {
 }
 
 module.exports = {
+  Logout: (req, res) => {
+    try{
+      req.session.loggedin = false;
+      res.status(200).json({access: 1, auth: 0});
+    }
+    catch(e){
+      res.status(404).json({error:e,access: 0,auth: 1});
+    }
+  },
   Logkh: (req, res) => {
     let { makh, matkhau } = req.body;
     pool.getConnection((err, con) => {
       if (err) {
         console.log(err);
-        res.status(404).json({ error: err, access: 0 });
+        res.status(404).json({ error: err, access: 0,auth: 0 });
       }
       let sql = `Select * from khachhang where makh='${makh}' and matkhau='${matkhau}';`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
-          res.status(404).json({ error: err, access: 0 });
+          res.status(404).json({ error: err, access: 0,auth: 0 });
         }
         else {
           console.log(data);
           if (data.length > 0) {
             req.session.loggedin = true;
-            res.status(200).json({ access: 1 })
+            res.status(200).json({ access: 1,auth: 1 })
           }
           else { 
-            res.status(404).json({ access: 0 }) };
+            res.status(404).json({ access: 0,auth: 0 }) };
         }
         con.release();
       });
@@ -85,27 +94,27 @@ module.exports = {
     pool.getConnection((err, con) => {
       if (err) {
         console.log(err);
-        res.status(404).json({ error: err, access: 0 });
+        res.status(404).json({ error: err, access: 0,auth: 0 });
       }
       let sql = `Select * from nhanvien where manv='${manv}' and matkhau='${matkhau}';`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
-          res.status(404).json({ error: err, access: 0 });
+          res.status(404).json({ error: err, access: 0,auth: 0 });
         }
         console.log(data);
         if(data.length>0){
           req.session.loggedin = true;
           if ( data[0].machucvu === 1)
-          res.status(200).json({ access: 1 });
+          res.status(200).json({ access: 1,auth: 1 });
         else if (data[0].machucvu === 2)
-          res.status(200).json({ access: 2 });
+          res.status(200).json({ access: 2,auth: 1});
         else if (data[0].machucvu === 3)
-          res.status(200).json({ access: 3 });
+          res.status(200).json({ access: 3,auth: 1 });
         else if (data[0].machucvu === 4)
-          res.status(200).json({ access: 4 });
+          res.status(200).json({ access: 4,auth: 1 });
         }
-        else res.status(404).json({ access: 0 });
+        else res.status(404).json({ access: 0,auth: 0 });
         con.release();
       });
     });

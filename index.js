@@ -40,6 +40,7 @@ server_https.listen(443, () => {
 app.post("/Logkh",Query.Logkh);
 app.post("/Lognv",Query.Lognv);
 app.post("/Regkh",Query.Regkh);
+app.get("/Logout",Query.Logout);
 app.use("/KH",KH);
 app.use("/NV",NV);
 app.use("/Sys",Sys);

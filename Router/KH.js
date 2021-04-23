@@ -6,7 +6,7 @@ router.use((req,res,next)=>{
     if(req.session.loggedin !== true){
         let str = "Co truy cap trai phep khi chua dang nhap"
         console.log(str);
-        res.status(404).json({ access: 0,err:str });
+        res.status(404).json({ auth: 0,err:str });
     }
     else next();
 })
