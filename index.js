@@ -1,6 +1,7 @@
 const http = require("http");
 const https = require("https");
 const express = require("express");
+const session = require("express-session");
 const cors = require("cors");
 const fs = require("fs");
 const bodyParser = require(`body-parser`);
@@ -26,6 +27,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(session({secret: 'secret',
+resave: true,
+saveUninitialized: true}))
 server_http.listen(8080, () => {
   console.log("Sever HTTP chay thanh cong");
 });

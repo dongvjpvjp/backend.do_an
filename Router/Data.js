@@ -2,7 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Query = require("../Query");
 
-
+router.use((req,res,next)=>{
+    if(req.session.loggedin !== true){
+        let str = "Co truy cap trai phep khi chua dang nhap"
+        console.log(str);
+        res.status(404).json({ access: 0,err:str });
+    }
+    else next();
+})
 
 router.get("/SP/SearchMaSP/:masp",Query.SearchMasp);
 router.get("/SP/SearchTenSP/:tensp",Query.SearchTensp);
