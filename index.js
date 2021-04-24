@@ -48,9 +48,7 @@ app.post("/Logkh", Query.Logkh);
 app.post("/Lognv", Query.Lognv);
 app.post("/Regkh", Query.Regkh);
 app.get("/Logout", Query.Logout);
-app.get("/Logout", (req,res)=>{
-  
-});
+
 
 app.use("/KH", KH);
 app.use("/NV", NV);
