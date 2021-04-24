@@ -3,7 +3,7 @@ const router = express.Router();
 const Query = require("../Query");
 
 router.use((req,res,next)=>{
-    if(req.session.loggedin !== true){
+    if(req.session.data !== req.session.id){
         let str = "Co truy cap trai phep khi chua dang nhap"
         console.log(str);
         res.status(404).json({ auth: 0,err:str });

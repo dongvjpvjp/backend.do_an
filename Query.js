@@ -54,13 +54,10 @@ const QueryData = (req, res, sql) => {
 
 module.exports = {
   Logout: (req, res) => {
-    try{
-      req.session.loggedin = false;
-      res.status(200).json({access: 1, auth: 0});
-    }
-    catch(e){
-      res.status(404).json({error:e,access: 0,auth: 1});
-    }
+    req.session.destroy((err)=>{
+      if(err) res.status(404).json({error:err,access: 0,auth: 1});
+      else res.status(200).json({access: 1, auth: 0});
+    })
   },
   Logkh: (req, res) => {
     let { makh, matkhau } = req.body;
@@ -104,15 +101,15 @@ module.exports = {
         }
         console.log(data);
         if(data.length>0){
-          req.session.loggedin = true;
+          req.session.data=req.session.id;
           if ( data[0].machucvu === 1)
-          res.status(200).json({ access: 1,auth: 1 });
+          res.status(200).json({ access: 1,auth: 1,data:req.session.data });
         else if (data[0].machucvu === 2)
-          res.status(200).json({ access: 2,auth: 1});
+          res.status(200).json({ access: 2,auth: 1,data:req.session.data});
         else if (data[0].machucvu === 3)
-          res.status(200).json({ access: 3,auth: 1 });
+          res.status(200).json({ access: 3,auth: 1,data:req.session.data });
         else if (data[0].machucvu === 4)
-          res.status(200).json({ access: 4,auth: 1 });
+          res.status(200).json({ access: 4,auth: 1,data:req.session.data });
         }
         else res.status(404).json({ access: 0,auth: 0 });
         con.release();

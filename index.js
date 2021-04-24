@@ -2,6 +2,8 @@ const http = require("http");
 const https = require("https");
 const express = require("express");
 const session = require("express-session");
+
+
 const cors = require("cors");
 const fs = require("fs");
 const bodyParser = require(`body-parser`);
@@ -27,9 +29,14 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(session({secret: 'secret',
-resave: true,
-saveUninitialized: true}))
+
+app.use(session({
+  secret: 'secret',
+  resave: false,
+         saveUninitialized: true,
+         
+
+}))
 server_http.listen(8080, () => {
   console.log("Sever HTTP chay thanh cong");
 });
@@ -37,11 +44,15 @@ server_https.listen(443, () => {
   console.log("Sever HTTPS chay thanh cong");
 });
 
-app.post("/Logkh",Query.Logkh);
-app.post("/Lognv",Query.Lognv);
-app.post("/Regkh",Query.Regkh);
-app.get("/Logout",Query.Logout);
-app.use("/KH",KH);
-app.use("/NV",NV);
-app.use("/Sys",Sys);
-app.use("/Data",Data);
+app.post("/Logkh", Query.Logkh);
+app.post("/Lognv", Query.Lognv);
+app.post("/Regkh", Query.Regkh);
+app.get("/Logout", Query.Logout);
+app.get("/Logout", (req,res)=>{
+  
+});
+
+app.use("/KH", KH);
+app.use("/NV", NV);
+app.use("/Sys", Sys);
+app.use("/Data", Data);
