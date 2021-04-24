@@ -39,7 +39,7 @@ create table giohang (magiohang varchar(255) primary key not null,makh varchar(2
 -- Done
 create table chitietgiohang(machitietgiohang int primary key not null auto_increment, magiohang varchar(255), constraint fk_giohang_chitietgiohang foreign key (magiohang) references giohang(magiohang),soluong int,masp varchar(255),constraint fk_chitietgiohang_sanpham foreign key (masp) references sanpham(masp) );
 -- Done
-create table hoadon(diachi varchar(255),ghichu text,machinhanh varchar(255),constraint fk_hoadon_chinhanh foreign key (machinhanh) references chinhanh(machinhanh),mahoadon varchar(255) primary key not null, makh varchar(255), constraint fk_hoadon_khachhang foreign key (makh) references khachhang(makh),masukien varchar(255), constraint fk_hoadon_sukien foreign key (masukien) references sukien(masukien),ngaytao datetime,sdt varchar(255),tenhoadon varchar(255),trangthai varchar(255));
+create table hoadon(diachi varchar(255),ghichu text,machinhanh varchar(255),constraint fk_hoadon_chinhanh foreign key (machinhanh) references chinhanh(machinhanh),mahoadon varchar(255) primary key not null, makh varchar(255), constraint fk_hoadon_khachhang foreign key (makh) references khachhang(makh),masukien varchar(255), constraint fk_hoadon_sukien foreign key (masukien) references sukien(masukien),ngaytao datetime,sdt varchar(255),tenhoadon varchar(255),trangthai varchar(255),tongtien float);
 -- Done
 create table chitiethoadon(machitiethoadon int primary key not null auto_increment,dongia float,mahoadon varchar(255), constraint fk_cthoadon_hoadon foreign key (mahoadon) references hoadon(mahoadon),masp varchar(255),constraint fk_cthoadon_sanpham foreign key (masp) references sanpham(masp),soluong int);
 -- Done
@@ -47,7 +47,7 @@ create table phieuxuat (machinhanh varchar(255), constraint fk_phieuxuat_chinhan
 -- Done
 create table chitietphieuxuat(dongia float,machitietphieuxuat int primary key not null auto_increment,maphieuxuat varchar(255),constraint fk_chitietphieuxuat_phieuxuat foreign key (maphieuxuat) references phieuxuat(maphieuxuat),soluong int,mahh varchar(255),constraint fk_phieuxuat_hanghoa foreign key (mahh) references hanghoa(mahh),makho varchar(255), constraint fk_phieuxuat_kho foreign key (makho) references kho(makho));
 -- Done
-create table phieutrahang(maphieutrahang varchar(255) primary key, mahoadon varchar(255),constraint fk_phieutrahang_hoadon foreign key (mahoadon) references hoadon(mahoadon),ngaytra datetime);
+create table phieutrahang(maphieutrahang varchar(255) primary key, mahoadon varchar(255),constraint fk_phieutrahang_hoadon foreign key (mahoadon) references hoadon(mahoadon),ngaytra datetime,tongtien float);
 -- Done
 create table chitietphieutrahang(maphieutrahang varchar(255), constraint fk_ctphieutrahang_phieutrahang foreign key (maphieutrahang) references phieutrahang(maphieutrahang), maphieutrahangchitiet int primary key auto_increment not null, soluong int, masp varchar(255),constraint fk_ctphietrahang_sanpham foreign key (masp) references sanpham(masp),dongia float );
 -- Done
@@ -215,6 +215,87 @@ END$$
  DELIMITER ;
 -- TRIGER CHO PHIEUCHITIEN => - Ngan sach / ngan quy
 
+DROP TRIGGER IF EXISTS insert_cthd_hd;
+DELIMITER $$
+ CREATE TRIGGER insert_cthd_hd
+ after insert ON chitiethoadon
+ FOR EACH ROW
+BEGIN
+ update hoadon,chitiethoadon
+SET
+ hoadon.tongtien = hoadon.tongtien + chitiethoadon.dongia
+ where hoadon.mahoadon = chitiethoadon.mahoadon and machitiethoadon=New.machitiethoadon;
+END$$
+ DELIMITER ;
+ 
+DROP TRIGGER IF EXISTS update_cthd_hd;
+DELIMITER $$
+ CREATE TRIGGER update_cthd_hd
+ after update ON chitiethoadon
+ FOR EACH ROW
+BEGIN
+ update hoadon,chitiethoadon
+SET
+ hoadon.tongtien = hoadon.tongtien - old.dongia + chitiethoadon.dongia
+ where hoadon.mahoadon = chitiethoadon.mahoadon and machitiethoadon=New.machitiethoadon;
+END$$
+ DELIMITER ;
+ 
+DROP TRIGGER IF EXISTS delete_cthd_hd;
+DELIMITER $$
+ CREATE TRIGGER delete_cthd_hd
+ before delete ON chitiethoadon
+ FOR EACH ROW
+BEGIN
+ update hoadon,chitiethoadon
+SET
+ hoadon.tongtien = hoadon.tongtien - old.dongia
+ where hoadon.mahoadon = chitiethoadon.mahoadon and machitiethoadon=old.machitiethoadon;
+END$$
+ DELIMITER ;
+-- TRIGER CHO CHI TIET HOA DON => + TONGTIEN CHO HOA DON
+
+-- ------------------------------
+DROP TRIGGER IF EXISTS insert_ctpth_pth;
+DELIMITER $$
+ CREATE TRIGGER insert_ctpth_pth
+ after insert ON chitietphieutrahang
+ FOR EACH ROW
+BEGIN
+ update phieutrahang,chitietphieutrahang
+SET
+ phieutrahang.tongtien = phieutrahang.tongtien + chitietphieutrahang.dongia
+ where phieutrahang.maphieutrahang = chitietphieutrahang.maphieutrahang and maphieutrahangchitiet = New.maphieutrahangchitiet;
+END$$
+ DELIMITER ;
+ 
+DROP TRIGGER IF EXISTS update_ctpth_pth;
+DELIMITER $$
+ CREATE TRIGGER update_ctpth_pth
+ after update ON chitietphieutrahang
+ FOR EACH ROW
+BEGIN
+ update phieutrahang,chitietphieutrahang
+SET
+ phieutrahang.tongtien = phieutrahang.tongtien - old.dongia + chitietphieutrahang.dongia
+ where phieutrahang.maphieutrahang = chitietphieutrahang.maphieutrahang and maphieutrahangchitiet = New.maphieutrahangchitiet;
+END$$
+ DELIMITER ;
+ 
+DROP TRIGGER IF EXISTS delete_ctpth_pth;
+DELIMITER $$
+ CREATE TRIGGER delete_ctpth_pth
+ before delete ON chitietphieutrahang
+ FOR EACH ROW
+BEGIN
+ update phieutrahang,chitietphieutrahang
+SET
+ phieutrahang.tongtien = phieutrahang.tongtien - chitietphieutrahang.dongia
+ where phieutrahang.maphieutrahang = chitietphieutrahang.maphieutrahang and maphieutrahangchitiet = old.maphieutrahangchitiet;
+END$$
+ DELIMITER ;
+-- TRIGER CHO CHI TIET PHIEU TRA HANG => + TONGTIEN CHO PHIEU TRA HANG
+
 -- NOTE 1: Xoa bang tai khoan 
 -- NOTE 2: Them truong trang thai vao hoa don (varchar) de nhan vien xac nhan don hang
 -- Note 3: doi anhnhanvien thanh anhnv, hoten thanh tennv => Xoa gioi tinh trong bang csdl nhan vien, them truong diachi + email
@@ -228,13 +309,14 @@ END$$
 -- Note 11:Them ngay nghi vao bang diemdanhnv, 1 nhan vien co nhieu bang diemdanhnv => Xoa madiemdanhnv trong bang luong (moi thang se co 1 bang?) 
 -- Note12: Them truong nganquy trong bang chi nhanh, them phieunhan, su dung de nhan tien (+ tien cho cac chi nhanh), phieuchi se tru tien cua cac chi nhanh = trigger
 -- Note 13: Xoa manhanvien trong sanpham,Xoa NCC va chi nhanh trong hanghoa, them mancc trong chitietphieunhap, them makho trong chitietphieuxuat, doi khoiluong => soluong va xoa dongia trong chitietsp
+-- Note 14: Them tongtien vao hoadon, phieutrahang
 
 -- CSDL mau: 
 insert into sukien(chietkhau,tungay,denngay,masukien,noidung,tensukien) values(8,"2020-04-20","2021-04-21","sk01","Su kien 01 chiet khau 8% tong hoa don","Su kien thang 4");
 insert into sukien(chietkhau,tungay,denngay,masukien,noidung,tensukien) values(5,"2021-10-20","2021-10-21","sk02","Su kien 02 chiet khau 5% tong hoa don cho khach hang xinh gai","Su kien thang 3");
 
-insert into chinhanh (machinhanh, sdt, tenchinhanh, gmail,diachi, nganquy) values("cn01","0528455877","Chi nhanh Xuan Dong","dong74225@st.vimaru.edu.vn","Kieu Son, Hai Phong",10000000000);
-insert into chinhanh (machinhanh, sdt, tenchinhanh, gmail,diachi, nganquy) values("cn02","0373664313","Chi nhanh JPV","dongxuannguyen@st.vimaru.edu.vn","Kieu Son, Hai Phong, Viet Nam",20000000000);
+insert into chinhanh (machinhanh, sdt, tenchinhanh, gmail,diachi, nganquy) values("cn01","0528455877","Chi nhanh Xuan Dong","dong74225@st.vimaru.edu.vn","Kieu Son, Hai Phong",0);
+insert into chinhanh (machinhanh, sdt, tenchinhanh, gmail,diachi, nganquy) values("cn02","0373664313","Chi nhanh JPV","dongxuannguyen@st.vimaru.edu.vn","Kieu Son, Hai Phong, Viet Nam",0);
 
 insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/kHCk6eM.jpeg",1,"Nguyen Xuan Dong","nv01","123456","cn01","1999-05-09","0123456789","0528455877","Hai Phong Viet Nam","dong74225@st.vimaru.edu.vn");
 insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/ps6GwPg.jpeg",2,"GIRL","nv02","admin","cn02","1999-03-24","01234567889","0528455877","Kieu Son Hai Phong Viet Nam","daibeo1997@st.vimaru.edu.vn");
@@ -260,8 +342,8 @@ insert into phieunhap(makho,maphieunhap,manv,ngaynhap,tenphieunhap,tongtien) val
 insert into nhacc(ghichu,mancc,tenncc) values("Nha cung cap tong hop","ncc01","Nha cung cap van cao");
 insert into nhacc(ghichu,mancc,tenncc) values("Nha cung cap tong hop 2","ncc02","Nha cung cap kieuson");
 
-insert into hanghoa(gianhap,mahh,makho,maloaihh,ngaynhap,soluong,tenhh,donvitinh) values (400,'hh01','k01','hangkho','2021-1-1',6,'hang kho 01','kg');
-insert into hanghoa(gianhap,mahh,makho,maloaihh,ngaynhap,soluong,tenhh,donvitinh) values (400,'hh02','k02','hangkho','2021-1-1',5,'hang kho 02','hop');
+insert into hanghoa(gianhap,mahh,makho,maloaihh,ngaynhap,soluong,tenhh,donvitinh) values (400,'hh01','k01','hangkho','2021-1-1',0,'hang kho 01','kg');
+insert into hanghoa(gianhap,mahh,makho,maloaihh,ngaynhap,soluong,tenhh,donvitinh) values (400,'hh02','k02','hangkho','2021-1-1',0,'hang kho 02','hop');
 
 insert into chitietphieunhap(dongia,maphieunhap,soluong,mahh,mancc) values (400,'pn01',6,'hh01','ncc01');
 insert into chitietphieunhap(dongia,maphieunhap,soluong,mahh,mancc) values (500,'pn02',68,'hh02','ncc02');
@@ -281,8 +363,8 @@ insert into giohang (magiohang,makh) values ('kh02','kh02');
 insert into chitietgiohang(magiohang,soluong,masp) values ('kh01',5,'sp01');
 insert into chitietgiohang(magiohang,soluong,masp) values ('kh02',4,'sp02');
 
-insert into hoadon(diachi,ghichu,machinhanh,mahoadon,makh,masukien,ngaytao,sdt,tenhoadon,trangthai) values ("3/5/45 Kieu son hp","Goi dien bao trc","cn01","hd01","kh01","sk01","2021-2-2","0528455877","Hoa don mua hang","Xac nhan");
-insert into hoadon(diachi,ghichu,machinhanh,mahoadon,makh,masukien,ngaytao,sdt,tenhoadon,trangthai) values ("3/5/45 Van cao hp","Goi dien bao trc","cn02","hd02","kh02","sk02","2021-2-2","05284558888","Hoa don mua hang 02","Chua Xac nhan");
+insert into hoadon(diachi,ghichu,machinhanh,mahoadon,makh,masukien,ngaytao,sdt,tenhoadon,trangthai,tongtien) values ("3/5/45 Kieu son hp","Goi dien bao trc","cn01","hd01","kh01","sk01","2021-2-2","0528455877","Hoa don mua hang","Xac nhan",0);
+insert into hoadon(diachi,ghichu,machinhanh,mahoadon,makh,masukien,ngaytao,sdt,tenhoadon,trangthai,tongtien) values ("3/5/45 Van cao hp","Goi dien bao trc","cn02","hd02","kh02","sk02","2021-2-2","05284558888","Hoa don mua hang 02","Chua Xac nhan",0);
 
 insert into chitiethoadon(dongia,mahoadon,masp,soluong) values (400,"hd01","sp01",4);
 insert into chitiethoadon(dongia,mahoadon,masp,soluong) values (400,"hd02","sp02",5);
@@ -293,8 +375,8 @@ insert into phieuxuat (machinhanh,maphieuxuat,manv,ngayxuat,tenphieuxuat,tongtie
 insert into chitietphieuxuat(dongia,maphieuxuat,soluong,mahh,makho) values (40,"px01",2,"hh01","K01");
 insert into chitietphieuxuat(dongia,maphieuxuat,soluong,mahh,makho) values (40,"px02",2,"hh02","K02");
 
-insert into phieutrahang(maphieutrahang,mahoadon,ngaytra) values ("pth01","hd01","2021-2-2");
-insert into phieutrahang(maphieutrahang,mahoadon,ngaytra) values ("pth02","hd02","2021-2-2");
+insert into phieutrahang(maphieutrahang,mahoadon,ngaytra,tongtien) values ("pth01","hd01","2021-2-2",0);
+insert into phieutrahang(maphieutrahang,mahoadon,ngaytra,tongtien) values ("pth02","hd02","2021-2-2",0);
 
 insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth01",1,"sp01",400);
 insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth02",1,"sp02",500);

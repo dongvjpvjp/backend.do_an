@@ -279,8 +279,8 @@ module.exports = {
   UpdateHH: (req, res) => {
     // create table hanghoa(gianhap float,mahh varchar(255) primary key not null,makho varchar(255), constraint fk_hanghoa_kho foreign key (makho) references kho(makho),maloaihh varchar(255),ngaynhap datetime,soluong int,tenhh varchar(255),donvitinh varchar(255));
 
-    let { gianhap, mahh, tenhh, makho, maloaihh, ngaynhap, donvitinh, soluong } = req.body;
-    let sql = `UPDATE hanghoa SET gianhap=${gianhap},tenhh='${tenhh}',makho='${makho}',maloaihh='${maloaihh}',ngaynhap='${ngaynhap}',donvitinh='${donvitinh}',soluong=${soluong} WHERE mahh='${mahh}';`
+    let { gianhap, mahh, tenhh, makho, maloaihh, ngaynhap, donvitinh} = req.body;
+    let sql = `UPDATE hanghoa SET gianhap=${gianhap},tenhh='${tenhh}',makho='${makho}',maloaihh='${maloaihh}',ngaynhap='${ngaynhap}',donvitinh='${donvitinh}' WHERE mahh='${mahh}';`
     QueryData(req, res, sql);
   },
   DeleteHH: (req, res) => {
@@ -288,8 +288,8 @@ module.exports = {
     QueryData(req, res, sql);
   },
   InsertHH: (req, res) => {
-    let { gianhap, mahh, tenhh, makho, maloaihh, ngaynhap, donvitinh, soluong } = req.body;
-    let sql = `Insert into hanghoa(gianhap, mahh,tenhh , makho, maloaihh, ngaynhap, donvitinh,soluong) values (${gianhap},'${mahh}','${tenhh}','${makho}','${maloaihh}','${ngaynhap}','${donvitinh}',${soluong})`;
+    let { gianhap, mahh, tenhh, makho, maloaihh, ngaynhap, donvitinh} = req.body;
+    let sql = `Insert into hanghoa(gianhap, mahh,tenhh , makho, maloaihh, ngaynhap, donvitinh,soluong) values (${gianhap},'${mahh}','${tenhh}','${makho}','${maloaihh}','${ngaynhap}','${donvitinh}',0)`;
     QueryData(req, res, sql);
   },
   // Cac API Viet cho data sanpham, hanghoa
@@ -402,7 +402,7 @@ module.exports = {
     GetData(req, res, csql);
   },
   InsertHoaDonAuto: (req, res) => {
-    let { diachi, ghichu, machinhanh, makh, masukien, ngaytao, tenhoadon, trangthai, sdt, mahoadon, values } = req.body;
+    let { diachi, ghichu, machinhanh, makh, masukien, ngaytao, tenhoadon, trangthai, sdt, mahoadon,values } = req.body;
     pool.getConnection((err, con) => {
       // Tạo 1 tài khoản người dùng -> Tạo luôn giỏ hàng với cùng mã kh
       if (err) {
@@ -419,7 +419,7 @@ module.exports = {
         }
         else {
           console.log(data);
-          sql = `Insert into hoadon (diachi,ghichu,machinhanh,makh,masukien,ngaytao,tenhoadon,trangthai,sdt,mahoadon) values('${diachi}','${ghichu}','${machinhanh}','${makh}','${masukien}','${ngaytao}','${tenhoadon}','${trangthai}','${sdt}','${mahoadon}' );`;
+          sql = `Insert into hoadon (diachi,ghichu,machinhanh,makh,masukien,ngaytao,tenhoadon,trangthai,sdt,mahoadon,tongtien) values('${diachi}','${ghichu}','${machinhanh}','${makh}','${masukien}','${ngaytao}','${tenhoadon}','${trangthai}','${sdt}','${mahoadon}',0);`;
 
           con.query(sql, (err, data) => {
             if (err) {
@@ -460,12 +460,12 @@ module.exports = {
     });
   }, //Khi nguoi dung dat hang va yeu cau he thong tu dong tao hoa don va cac chi tiet hoa don(NV cx co the tao hoadon mot cach thu cong) -> he thong se phai tu dong xoa het cac thong tin trong chi tiet gio hang cua khach hang
   InsertHoaDon: (req, res) => {
-    let { diachi, ghichu, machinhanh, makh, masukien, ngaytao, tenhoadon, trangthai, sdt, mahoadon } = req.body;
-    let sql = `Insert into hoadon (diachi,ghichu,machinhanh,makh,masukien,ngaytao,tenhoadon,trangthai,sdt,mahoadon) values('${diachi}','${ghichu}','${machinhanh}','${makh}','${masukien}','${ngaytao}','${tenhoadon}','${trangthai}','${sdt}','${mahoadon}' );`;
+    let { diachi, ghichu, machinhanh, makh, masukien, ngaytao, tenhoadon, trangthai, sdt, mahoadon} = req.body;
+    let sql = `Insert into hoadon (diachi,ghichu,machinhanh,makh,masukien,ngaytao,tenhoadon,trangthai,sdt,mahoadon,tongtien) values('${diachi}','${ghichu}','${machinhanh}','${makh}','${masukien}','${ngaytao}','${tenhoadon}','${trangthai}','${sdt}','${mahoadon}',0);`;
     QueryData(req, res, sql);
   },
   UpdateHoaDon: (req, res) => {
-    let { diachi, ghichu, machinhanh, makh, masukien, ngaytao, tenhoadon, trangthai, sdt, mahoadon } = req.body;
+    let { diachi, ghichu, machinhanh, makh, masukien, ngaytao, tenhoadon, trangthai, sdt, mahoadon} = req.body;
     let sql = `UPDATE hoadon SET diachi= '${diachi}',ghichu='${ghichu}',machinhanh='${machinhanh}',makh='${makh}',masukien='${masukien}',ngaytao='${ngaytao}',tenhoadon='${tenhoadon}',trangthai='${trangthai}',sdt='${sdt}' WHERE mahoadon='${mahoadon}';`
     QueryData(req, res, sql);
   },
@@ -544,7 +544,7 @@ module.exports = {
   },
   InsertPhieuTraHang: (req, res) => {
     let {maphieutrahang,mahoadon,ngaytra} = req.body;
-    let sql = `Insert into phieutrahang(maphieutrahang,mahoadon,ngaytra) values ('${maphieutrahang}','${mahoadon}','${ngaytra}')`;
+    let sql = `Insert into phieutrahang(maphieutrahang,mahoadon,ngaytra,tongtien) values ('${maphieutrahang}','${mahoadon}','${ngaytra}',0)`;
     QueryData(req, res, sql);
   },
 
@@ -557,7 +557,7 @@ module.exports = {
         con.release();
         res.status(404).json({ error: err, access: 0 });
       }
-      let sql = `Insert into phieutrahang(maphieutrahang,mahoadon,ngaytra) values ('${maphieutrahang}','${mahoadon}','${ngaytra}')`;
+      let sql = `Insert into phieutrahang(maphieutrahang,mahoadon,ngaytra,tongtien) values ('${maphieutrahang}','${mahoadon}','${ngaytra}',0)`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
@@ -1015,8 +1015,8 @@ module.exports = {
   },
   UpdateChinhanh: (req, res) => {
 
-    let { machinhanh, sdt, tenchinhanh, gmail, diachi, nganquy } = req.body;
-    let sql = `UPDATE chinhanh SET sdt= '${sdt}',tenchinhanh='${tenchinhanh}',gmail='${gmail}',diachi='${diachi}', nganquy=${nganquy} WHERE machinhanh='${machinhanh}';`
+    let { machinhanh, sdt, tenchinhanh, gmail, diachi} = req.body;
+    let sql = `UPDATE chinhanh SET sdt= '${sdt}',tenchinhanh='${tenchinhanh}',gmail='${gmail}',diachi='${diachi}' WHERE machinhanh='${machinhanh}';`
     QueryData(req, res, sql);
   },
   DeleteChinhanh: (req, res) => {
@@ -1024,8 +1024,8 @@ module.exports = {
     QueryData(req, res, sql);
   },
   InsertChinhanh: (req, res) => {
-    let { machinhanh, sdt, tenchinhanh, gmail, diachi, nganquy } = req.body;
-    let sql = `Insert into chinhanh(machinhanh,sdt,tenchinhanh,gmail,diachi,nganquy) values ('${machinhanh}','${sdt}','${tenchinhanh}','${gmail}','${diachi}',${nganquy})`;
+    let { machinhanh, sdt, tenchinhanh, gmail, diachi} = req.body;
+    let sql = `Insert into chinhanh(machinhanh,sdt,tenchinhanh,gmail,diachi,nganquy) values ('${machinhanh}','${sdt}','${tenchinhanh}','${gmail}','${diachi}',0)`;
     QueryData(req, res, sql);
   },
 
