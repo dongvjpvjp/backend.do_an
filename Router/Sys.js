@@ -13,7 +13,7 @@ const Query = require("../Query");
 
 router.get("/GetAllHD",Query.GetAllHD);
 router.get("/GetHD/:mahoadon",Query.GetHD);
-router.get("/GetHDKH/:makh",Query.GetHD);
+router.get("/GetHDKH/:makh",Query.GetHDKH);
 router.get("/GetCTHD/:machitiethoadon",Query.GetCTHD);
 router.get("/GetAllCTHD/:mahoadon",Query.GetAllCTHD);
 

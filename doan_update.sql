@@ -223,7 +223,7 @@ DELIMITER $$
 BEGIN
  update hoadon,chitiethoadon
 SET
- hoadon.tongtien = hoadon.tongtien + chitiethoadon.dongia
+ hoadon.tongtien = hoadon.tongtien + (chitiethoadon.dongia*chitiethoadon.soluong)
  where hoadon.mahoadon = chitiethoadon.mahoadon and machitiethoadon=New.machitiethoadon;
 END$$
  DELIMITER ;
@@ -236,7 +236,7 @@ DELIMITER $$
 BEGIN
  update hoadon,chitiethoadon
 SET
- hoadon.tongtien = hoadon.tongtien - old.dongia + chitiethoadon.dongia
+ hoadon.tongtien = hoadon.tongtien - (old.dongia*old.soluong) + (chitiethoadon.dongia*chitiethoadon*chitiethoadon.soluong)
  where hoadon.mahoadon = chitiethoadon.mahoadon and machitiethoadon=New.machitiethoadon;
 END$$
  DELIMITER ;
@@ -249,7 +249,7 @@ DELIMITER $$
 BEGIN
  update hoadon,chitiethoadon
 SET
- hoadon.tongtien = hoadon.tongtien - old.dongia
+ hoadon.tongtien = hoadon.tongtien - (old.dongia*old.soluong)
  where hoadon.mahoadon = chitiethoadon.mahoadon and machitiethoadon=old.machitiethoadon;
 END$$
  DELIMITER ;
@@ -264,7 +264,7 @@ DELIMITER $$
 BEGIN
  update phieutrahang,chitietphieutrahang
 SET
- phieutrahang.tongtien = phieutrahang.tongtien + chitietphieutrahang.dongia
+ phieutrahang.tongtien = phieutrahang.tongtien + (chitietphieutrahang.dongia*chitietphieutrahang.soluong)
  where phieutrahang.maphieutrahang = chitietphieutrahang.maphieutrahang and maphieutrahangchitiet = New.maphieutrahangchitiet;
 END$$
  DELIMITER ;
@@ -277,7 +277,7 @@ DELIMITER $$
 BEGIN
  update phieutrahang,chitietphieutrahang
 SET
- phieutrahang.tongtien = phieutrahang.tongtien - old.dongia + chitietphieutrahang.dongia
+ phieutrahang.tongtien = phieutrahang.tongtien - (old.dongia*old.soluong) + (chitietphieutrahang.dongia*chitietphieutrahang.soluong)
  where phieutrahang.maphieutrahang = chitietphieutrahang.maphieutrahang and maphieutrahangchitiet = New.maphieutrahangchitiet;
 END$$
  DELIMITER ;
@@ -290,7 +290,7 @@ DELIMITER $$
 BEGIN
  update phieutrahang,chitietphieutrahang
 SET
- phieutrahang.tongtien = phieutrahang.tongtien - chitietphieutrahang.dongia
+ phieutrahang.tongtien = phieutrahang.tongtien - (old.dongia*old.soluong)
  where phieutrahang.maphieutrahang = chitietphieutrahang.maphieutrahang and maphieutrahangchitiet = old.maphieutrahangchitiet;
 END$$
  DELIMITER ;
