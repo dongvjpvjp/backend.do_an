@@ -9,7 +9,7 @@ create table sukien(chietkhau float, tungay datetime, denngay datetime,masukien 
 -- Done
 create table chinhanh (machinhanh varchar(255) primary key not null, sdt varchar(255),tenchinhanh varchar(255),gmail text,diachi varchar(255),nganquy float);
 -- Done
-create table nhanvien(anhnv text,machucvu int,gioitinh char,tennv varchar(255),manv varchar(255) primary key not null,matkhau varchar(255) not null, machinhanh varchar(255), constraint fk_nv_chinhanh foreign key (machinhanh) references chinhanh (machinhanh),ngaysinh datetime,cmnd varchar(255), sdt varchar(255),diachi text,email text);
+create table nhanvien(anhnv text,machucvu int,tennv varchar(255),manv varchar(255) primary key not null,matkhau varchar(255) not null, machinhanh varchar(255), constraint fk_nv_chinhanh foreign key (machinhanh) references chinhanh (machinhanh),ngaysinh datetime,cmnd varchar(255), sdt varchar(255),diachi text,email text);
 -- Done
 create table diemdanhnv (madiemdanhnv varchar(255) primary key not null,manv varchar(255),constraint fk_diemdanhnv_nv foreign key (manv) references nhanvien(manv),ngaydimuon int,ngaylam int,ngaynghi int);
 -- Done
@@ -319,7 +319,9 @@ insert into chinhanh (machinhanh, sdt, tenchinhanh, gmail,diachi, nganquy) value
 insert into chinhanh (machinhanh, sdt, tenchinhanh, gmail,diachi, nganquy) values("cn02","0373664313","Chi nhanh JPV","dongxuannguyen@st.vimaru.edu.vn","Kieu Son, Hai Phong, Viet Nam",0);
 
 insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/kHCk6eM.jpeg",1,"Nguyen Xuan Dong","nv01","123456","cn01","1999-05-09","0123456789","0528455877","Hai Phong Viet Nam","dong74225@st.vimaru.edu.vn");
-insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/ps6GwPg.jpeg",2,"GIRL","nv02","admin","cn02","1999-03-24","01234567889","0528455877","Kieu Son Hai Phong Viet Nam","daibeo1997@st.vimaru.edu.vn");
+insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/ps6GwPg.jpeg",2,"GIRL","nv02","123456","cn02","1999-03-24","01234567889","0528455877","Kieu Son Hai Phong Viet Nam","daibeo1997@st.vimaru.edu.vn");
+insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/kHCk6eM.jpeg",3,"Nguyen Xuan Dong","nv03","123456","cn01","1999-05-09","0123456789","0528455877","Hai Phong Viet Nam","dong74225@st.vimaru.edu.vn");
+insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/ps6GwPg.jpeg",4,"GIRL","nv04","123456","cn02","1999-03-24","01234567889","0528455877","Kieu Son Hai Phong Viet Nam","daibeo1997@st.vimaru.edu.vn");
 
 insert into diemdanhnv (madiemdanhnv,manv,ngaylam,ngaydimuon,ngaynghi) values("T1","nv01",15,2,4);
 insert into diemdanhnv (madiemdanhnv,manv,ngaylam,ngaydimuon,ngaynghi) values("T2","nv02",25,5,7);

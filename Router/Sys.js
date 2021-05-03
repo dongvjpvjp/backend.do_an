@@ -6,13 +6,14 @@ const Query = require("../Query");
 //     if(req.session.data !== req.session.id){
 //         let str = "Co truy cap trai phep khi chua dang nhap"
 //         console.log(str);
-//         res.status(404).json({ auth: 0,err:str });
+//         res.status(204).json({ auth: 0,err:str });
 //     }
 //     else next();
 // })
 
 router.get("/GetAllHD",Query.GetAllHD);
 router.get("/GetHD/:mahoadon",Query.GetHD);
+router.get("/GetHDKH/:makh",Query.GetHD);
 router.get("/GetCTHD/:machitiethoadon",Query.GetCTHD);
 router.get("/GetAllCTHD/:mahoadon",Query.GetAllCTHD);
 

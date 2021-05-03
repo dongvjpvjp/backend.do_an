@@ -44,6 +44,10 @@ server_https.listen(443, () => {
   console.log("Sever HTTPS chay thanh cong");
 });
 
+app.use(express.static('build'));
+app.get("/",(req,res)=>{
+  res.status(200).sendFile(__dirname+"/build/index.html");
+})
 app.post("/Logkh", Query.Logkh);
 app.post("/Lognv", Query.Lognv);
 app.post("/Regkh", Query.Regkh);

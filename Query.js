@@ -12,19 +12,19 @@ const GetData = (req, res, csql = "") => {
     if (err) {
       console.log(err);
       con.release();
-      res.status(404).json({ error: err, access: 0 });
+      res.status(204).json({ error: err, access: 0 });
     }
     let sql = csql || `select * from sanpham Order By tensp; `
     con.query(sql, (err, data) => {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0,sql:csql});
       }
       else {
-        console.log(data);
+        console.log({data:data});
         con.release();
-        res.status(200).json({ access: 1, data: data });
+        res.status(200).json({ access: 1, data: data,sql:csql });
       }
     })
   })
@@ -34,18 +34,18 @@ const QueryData = (req, res, sql) => {
     if (err) {
       console.log(err);
       con.release();
-      res.status(404).json({ error: err, access: 0 });
+      res.status(204).json({ error: err, access: 0 });
     }
     con.query(sql, (err, data) => {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0,sql:sql });
       }
       else {
-        console.log(data);
+        console.log({data,sql:sql});
         con.release();
-        res.status(200).json({ access: 1 });
+        res.status(200).json({ access: 1,sql:sql });
       }
     })
 
@@ -55,7 +55,7 @@ const QueryData = (req, res, sql) => {
 module.exports = {
   Logout: (req, res) => {
     req.session.destroy((err)=>{
-      if(err) res.status(404).json({error:err,access: 0,auth: 1});
+      if(err) res.status(204).json({error:err,access: 0,auth: 1});
       else res.status(200).json({access: 1, auth: 0});
     })
   },
@@ -64,22 +64,22 @@ module.exports = {
     pool.getConnection((err, con) => {
       if (err) {
         console.log(err);
-        res.status(404).json({ error: err, access: 0,auth: 0 });
+        res.status(204).json({ error: err, access: 0,auth: 0 });
       }
       let sql = `Select * from khachhang where makh='${makh}' and matkhau='${matkhau}';`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
-          res.status(404).json({ error: err, access: 0,auth: 0 });
+          res.status(204).json({ error: err, access: 0,auth: 0 });
         }
         else {
           console.log(data);
           if (data.length > 0) {
-            req.session.loggedin = true;
+            req.session.data = req.session.id;
             res.status(200).json({ access: 1,auth: 1 })
           }
           else { 
-            res.status(404).json({ access: 0,auth: 0 }) };
+            res.status(204).json({ access: 0,auth: 0 }) };
         }
         con.release();
       });
@@ -91,13 +91,13 @@ module.exports = {
     pool.getConnection((err, con) => {
       if (err) {
         console.log(err);
-        res.status(404).json({ error: err, access: 0,auth: 0 });
+        res.status(200).json({ error: err, access: 0,auth: 0 });
       }
       let sql = `Select * from nhanvien where manv='${manv}' and matkhau='${matkhau}';`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
-          res.status(404).json({ error: err, access: 0,auth: 0 });
+          res.status(200).json({ error: err, access: 0,auth: 0 });
         }
         console.log(data);
         if(data.length>0){
@@ -111,7 +111,7 @@ module.exports = {
         else if (data[0].machucvu === 4)
           res.status(200).json({ access: 4,auth: 1,data:req.session.data });
         }
-        else res.status(404).json({ access: 0,auth: 0 });
+        else res.status(204).json({ access: 0,auth: 0 });
         con.release();
       });
     });
@@ -123,7 +123,7 @@ module.exports = {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0 });
       }
       else {
         let sql = `Insert into khachhang (anhkh,diachi,email,makh,sdt,tenkh,matkhau) values('${anhkh}','${diachi}','${email}','${makh}','${sdt}','${tenkh}','${matkhau}');`
@@ -131,7 +131,7 @@ module.exports = {
           if (err) {
             console.log(err);
             con.release();
-            res.status(404).json({ error: err, access: 0 });
+            res.status(204).json({ error: err, access: 0 });
 
           }
           else {
@@ -141,7 +141,7 @@ module.exports = {
               if (err) {
                 console.log(err);
                 con.release();
-                res.status(404).json({ error: err, access: 0 });
+                res.status(204).json({ error: err, access: 0 });
               }
               else {
                 console.log(data);
@@ -160,7 +160,7 @@ module.exports = {
 
   }, //Tao tk kh -> Tao ca gio hang
   // CAC API VIET CHO TRANG DANG NHAP VA DANG KY
-
+  
 
   SearchMasp: (req, res) => {
     csql = `Select * from sanpham where masp Like '%${req.params.masp}%';`
@@ -205,14 +205,14 @@ module.exports = {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0 });
       }
       let sql = `Insert into sanpham(masp,anhsp,giaban,tensp,maloaisp, noidung, trangthai) values ('${masp}','${anhsp}',${giaban},'${tensp}','${maloaisp}','${noidung}','${trangthai}')`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
           con.release();
-          res.status(404).json({ error: err, access: 0 });
+          res.status(204).json({ error: err, access: 0 });
         }
         else {
           console.log(data);
@@ -228,7 +228,7 @@ module.exports = {
             if (err) {
               console.log(err);
               con.release();
-              res.status(404).json({ error: err, access: 0 });
+              res.status(204).json({ error: err, access: 0 });
 
             }
             else {
@@ -313,14 +313,14 @@ module.exports = {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0 });
       }
       let sql = `DELETE from chitietgiohang where magiohang='${req.params.makh}';`
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
           con.release();
-          res.status(404).json({ error: err, access: 0 });
+          res.status(204).json({ error: err, access: 0 });
 
         }
         else {
@@ -330,7 +330,7 @@ module.exports = {
             if (err) {
               console.log(err);
               con.release();
-              res.status(404).json({ error: err, access: 0 });
+              res.status(204).json({ error: err, access: 0 });
 
             }
             else {
@@ -340,7 +340,7 @@ module.exports = {
                 if (err) {
                   console.log(err);
                   con.release();
-                  res.status(404).json({ error: err, access: 0 });
+                  res.status(204).json({ error: err, access: 0 });
 
                 }
                 else {
@@ -393,6 +393,10 @@ module.exports = {
     csql = `Select * from hoadon where mahoadon = '${req.params.mahoadon}';`
     GetData(req, res, csql);
   },
+  GetHDKH: (req, res) => {
+    csql = `Select * from hoadon where makh = '${req.params.makh}';`
+    GetData(req, res, csql);
+  },
   GetCTHD: (req, res) => {
     csql = `select machitiethoadon,hoadon.mahoadon,tensp,chitiethoadon.masp,chitiethoadon.soluong,chitiethoadon.dongia from hoadon,chitiethoadon,sanpham where machitiethoadon=${req.params.machitiethoadon} and hoadon.mahoadon = chitiethoadon.mahoadon and sanpham.masp = chitiethoadon.masp;`;
     GetData(req, res, csql);
@@ -408,14 +412,14 @@ module.exports = {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0 });
       }
       let sql = `delete from chitietgiohang where magiohang='${makh}';`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
           con.release();
-          res.status(404).json({ error: err, access: 0 });
+          res.status(204).json({ error: err, access: 0 });
         }
         else {
           console.log(data);
@@ -425,7 +429,7 @@ module.exports = {
             if (err) {
               console.log(err);
               con.release();
-              res.status(404).json({ error: err, access: 0 });
+              res.status(204).json({ error: err, access: 0 });
 
             }
             else {
@@ -440,7 +444,7 @@ module.exports = {
                 if (err) {
                   console.log(err);
                   con.release();
-                  res.status(404).json({ error: err, access: 0 });
+                  res.status(204).json({ error: err, access: 0 });
 
                 }
                 else {
@@ -474,14 +478,14 @@ module.exports = {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0 });
       }
       let sql = `DELETE from chitiethoadon where mahoadon='${req.params.mahoadon}';`
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
           con.release();
-          res.status(404).json({ error: err, access: 0 });
+          res.status(204).json({ error: err, access: 0 });
 
         }
         else {
@@ -491,7 +495,7 @@ module.exports = {
             if (err) {
               console.log(err);
               con.release();
-              res.status(404).json({ error: err, access: 0 });
+              res.status(204).json({ error: err, access: 0 });
             }
             else {
               console.log(data);
@@ -555,14 +559,14 @@ module.exports = {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0 });
       }
       let sql = `Insert into phieutrahang(maphieutrahang,mahoadon,ngaytra,tongtien) values ('${maphieutrahang}','${mahoadon}','${ngaytra}',0)`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
           con.release();
-          res.status(404).json({ error: err, access: 0 });
+          res.status(204).json({ error: err, access: 0 });
         }
         else {
           console.log(data);
@@ -578,7 +582,7 @@ module.exports = {
             if (err) {
               console.log(err);
               con.release();
-              res.status(404).json({ error: err, access: 0 });
+              res.status(204).json({ error: err, access: 0 });
 
             }
             else {
@@ -649,14 +653,14 @@ module.exports = {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0 });
       }
       let sql = `Insert into phieunhap(maphieunhap,makho,manv,ngaynhap,tenphieunhap,tongtien) values ('${maphieunhap}','${makho}','${manv}','${ngaynhap}','${tenphieunhap}',${tongtien})`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
           con.release();
-          res.status(404).json({ error: err, access: 0 });
+          res.status(204).json({ error: err, access: 0 });
         }
         else {
           console.log(data);
@@ -670,7 +674,7 @@ module.exports = {
             if (err) {
               console.log(err);
               con.release();
-              res.status(404).json({ error: err, access: 0 });
+              res.status(204).json({ error: err, access: 0 });
 
             }
             else {
@@ -741,14 +745,14 @@ module.exports = {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0 });
       }
       let sql = `Insert into phieuxuat(maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat, tongtien) values ('${maphieuxuat}','${machinhanh}','${manv}','${ngayxuat}','${tenphieuxuat}',${tongtien})`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
           con.release();
-          res.status(404).json({ error: err, access: 0 });
+          res.status(204).json({ error: err, access: 0 });
         }
         else {
           console.log(data);
@@ -762,7 +766,7 @@ module.exports = {
             if (err) {
               console.log(err);
               con.release();
-              res.status(404).json({ error: err, access: 0 });
+              res.status(204).json({ error: err, access: 0 });
 
             }
             else {
@@ -874,14 +878,14 @@ module.exports = {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0 });
       }
 
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
           con.release();
-          res.status(404).json({ error: err, access: 0 });
+          res.status(204).json({ error: err, access: 0 });
 
         }
         else {
@@ -891,7 +895,7 @@ module.exports = {
             if (err) {
               console.log(err);
               con.release();
-              res.status(404).json({ error: err, access: 0 });
+              res.status(204).json({ error: err, access: 0 });
             }
             else {
               console.log(data);
@@ -912,14 +916,14 @@ module.exports = {
       if (err) {
         console.log(err);
         con.release();
-        res.status(404).json({ error: err, access: 0 });
+        res.status(204).json({ error: err, access: 0 });
       }
       let sql = `DELETE from luong where manv='${req.params.manv}';`
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
           con.release();
-          res.status(404).json({ error: err, access: 0 });
+          res.status(204).json({ error: err, access: 0 });
 
         }
         else {
@@ -929,7 +933,7 @@ module.exports = {
             if (err) {
               console.log(err);
               con.release();
-              res.status(404).json({ error: err, access: 0 });
+              res.status(204).json({ error: err, access: 0 });
 
             }
             else {
@@ -939,7 +943,7 @@ module.exports = {
                 if (err) {
                   console.log(err);
                   con.release();
-                  res.status(404).json({ error: err, access: 0 });
+                  res.status(204).json({ error: err, access: 0 });
                 }
                 else {
                   console.log(data);

@@ -6,7 +6,7 @@ const Query = require("../Query");
 //     if(req.session.data !== req.session.id){
 //         let str = "Co truy cap trai phep khi chua dang nhap"
 //         console.log(str);
-//         res.status(404).json({ auth: 0,err:str });
+//         res.status(204).json({ auth: 0,err:str });
 //     }
 //     else next();
 // })
