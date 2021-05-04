@@ -1,0 +1,31 @@
+@charset 'UTF-8';
+.table_nhapkho{
+    border-collapse: collapse;
+    width: 100%;
+
+}
+.table_nhapkho,th{
+    
+}
+.table_nhapkho, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+  }
+  .table_xuathang{
+    border-collapse: collapse;
+    width: 100%;
+
+}
+.table_xuathang,th{
+    
+}
+.table_xuathang, th, td {
+    border: 1px solid black;
+    border-collapse: collapse ;
+    padding: 5px;
+    text-decoration: white;
+  }
+  .container-fluid{
+      padding-top: 50px;
+  }

@@ -632,8 +632,8 @@ module.exports = {
     GetData(req, res, csql);
   },
   UpdatePhieuNhap: (req, res) => {
-    let { maphieunhap, makho, manv, ngaynhap, tenphieunhap, tongtien } = req.body;
-    let sql = `UPDATE phieunhap SET makho= '${makho}',manv='${manv}',ngaynhap='${ngaynhap}',tenphieunhap='${tenphieunhap}',tongtien=${tongtien} WHERE maphieunhap='${maphieunhap}';`
+    let { maphieunhap, makho, manv, ngaynhap, tenphieunhap } = req.body;
+    let sql = `UPDATE phieunhap SET makho= '${makho}',manv='${manv}',ngaynhap='${ngaynhap}',tenphieunhap='${tenphieunhap}' WHERE maphieunhap='${maphieunhap}';`
     QueryData(req, res, sql);
   },
   DeletePhieuNhap: (req, res) => {
@@ -641,13 +641,13 @@ module.exports = {
     QueryData(req, res, sql);
   },
   InsertPhieuNhap: (req, res) => {
-    let { maphieunhap, makho, manv, ngaynhap, tenphieunhap, tongtien } = req.body;
-    let sql = `Insert into phieunhap(maphieunhap,makho,manv,ngaynhap,tenphieunhap,tongtien) values ('${maphieunhap}','${makho}','${manv}','${ngaynhap}','${tenphieunhap}',${tongtien})`;
+    let { maphieunhap, makho, manv, ngaynhap, tenphieunhap } = req.body;
+    let sql = `Insert into phieunhap(maphieunhap,makho,manv,ngaynhap,tenphieunhap,tongtien) values ('${maphieunhap}','${makho}','${manv}','${ngaynhap}','${tenphieunhap}',0)`;
     QueryData(req, res, sql);
   },
 
   InsertPhieuNhapAuto: (req, res) => {
-    let { maphieunhap, makho, manv, ngaynhap, tenphieunhap, tongtien, values } = req.body;
+    let { maphieunhap, makho, manv, ngaynhap, tenphieunhap,  values } = req.body;
     pool.getConnection((err, con) => {
       // Tao phieu nhap auto tao cac chi tiet phieu nhap
       if (err) {
@@ -655,7 +655,7 @@ module.exports = {
         con.release();
         res.status(204).json({ error: err, access: 0 });
       }
-      let sql = `Insert into phieunhap(maphieunhap,makho,manv,ngaynhap,tenphieunhap,tongtien) values ('${maphieunhap}','${makho}','${manv}','${ngaynhap}','${tenphieunhap}',${tongtien})`;
+      let sql = `Insert into phieunhap(maphieunhap,makho,manv,ngaynhap,tenphieunhap,tongtien) values ('${maphieunhap}','${makho}','${manv}','${ngaynhap}','${tenphieunhap}',0)`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);
@@ -724,8 +724,8 @@ module.exports = {
     GetData(req, res, csql);
   },
   UpdatePhieuXuat: (req, res) => {  
-    let { maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat, tongtien } = req.body;
-    let sql = `UPDATE phieuxuat SET machinhanh= '${machinhanh}',manv='${manv}',ngayxuat='${ngayxuat}',tenphieuxuat='${tenphieuxuat}',tongtien=${tongtien} WHERE maphieuxuat='${maphieuxuat}';`
+    let { maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat, } = req.body;
+    let sql = `UPDATE phieuxuat SET machinhanh= '${machinhanh}',manv='${manv}',ngayxuat='${ngayxuat}',tenphieuxuat='${tenphieuxuat}' WHERE maphieuxuat='${maphieuxuat}';`
     QueryData(req, res, sql);
   },
   DeletePhieuXuat: (req, res) => {
@@ -733,13 +733,13 @@ module.exports = {
     QueryData(req, res, sql);
   },
   InsertPhieuXuat: (req, res) => {
-    let {maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat, tongtien} = req.body;
-    let sql = `Insert into phieuxuat(maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat, tongtien) values ('${maphieuxuat}','${machinhanh}','${manv}','${ngayxuat}','${tenphieuxuat}',${tongtien})`;
+    let {maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat} = req.body;
+    let sql = `Insert into phieuxuat(maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat, tongtien) values ('${maphieuxuat}','${machinhanh}','${manv}','${ngayxuat}','${tenphieuxuat}',0)`;
     QueryData(req, res, sql);
   },
 
   InsertPhieuXuatAuto: (req, res) => {
-    let {maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat, tongtien,values } = req.body;
+    let {maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat, values } = req.body;
     pool.getConnection((err, con) => {
       // Tao phieu nhap auto tao cac chi tiet phieu nhap
       if (err) {
@@ -747,7 +747,7 @@ module.exports = {
         con.release();
         res.status(204).json({ error: err, access: 0 });
       }
-      let sql = `Insert into phieuxuat(maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat, tongtien) values ('${maphieuxuat}','${machinhanh}','${manv}','${ngayxuat}','${tenphieuxuat}',${tongtien})`;
+      let sql = `Insert into phieuxuat(maphieuxuat, machinhanh, manv, ngayxuat, tenphieuxuat, tongtien) values ('${maphieuxuat}','${machinhanh}','${manv}','${ngayxuat}','${tenphieuxuat}',0)`;
       con.query(sql, (err, data) => {
         if (err) {
           console.log(err);

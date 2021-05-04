@@ -295,6 +295,85 @@ SET
 END$$
  DELIMITER ;
 -- TRIGER CHO CHI TIET PHIEU TRA HANG => + TONGTIEN CHO PHIEU TRA HANG
+DROP TRIGGER IF EXISTS insert_ctpn_pn;
+DELIMITER $$
+ CREATE TRIGGER insert_ctpn_pn
+ after insert ON chitietphieunhap
+ FOR EACH ROW
+BEGIN
+ update phieunhap,chitietphieunhap
+SET
+ phieunhap.tongtien = phieunhap.tongtien + (chitietphieunhap.dongia*chitietphieunhap.soluong)
+ where phieunhap.maphieunhap = chitietphieunhap.maphieunhap and machitietphieunhap = New.machitietphieunhap;
+END$$
+ DELIMITER ;
+ 
+DROP TRIGGER IF EXISTS update_ctpn_pn;
+DELIMITER $$
+ CREATE TRIGGER update_ctpn_pn
+ after update ON chitietphieunhap
+ FOR EACH ROW
+BEGIN
+ update phieunhap,chitietphieunhap
+SET
+ phieunhap.tongtien = phieunhap.tongtien - (old.dongia*old.soluong) + (chitietphieunhap.dongia*chitietphieunhap.soluong)
+ where phieunhap.maphieunhap = chitietphieunhap.maphieunhap and machitietphieunhap = New.machitietphieunhap;
+END$$
+ DELIMITER ;
+ 
+DROP TRIGGER IF EXISTS delete_ctpn_pn;
+DELIMITER $$
+ CREATE TRIGGER delete_ctpn_pn
+ before delete ON chitietphieunhap
+ FOR EACH ROW
+BEGIN
+ update phieunhap,chitietphieunhap
+SET
+ phieunhap.tongtien = phieunhap.tongtien - (old.dongia*old.soluong)
+ where phieunhap.maphieunhap = chitietphieunhap.maphieunhap and machitietphieunhap = old.machitietphieunhap;
+END$$
+ DELIMITER ;
+-- TRIGER CHO CHI TIET PHIEU NHAP => + TONGTIEN CHO PHIEU NHAP
+-- ----------------------------
+DROP TRIGGER IF EXISTS insert_ctpx_px;
+DELIMITER $$
+ CREATE TRIGGER insert_ctpx_px
+ after insert ON chitietphieuxuat
+ FOR EACH ROW
+BEGIN
+ update phieuxuat,chitietphieuxuat
+SET
+ phieuxuat.tongtien = phieuxuat.tongtien + (chitietphieuxuat.dongia*chitietphieuxuat.soluong)
+ where phieuxuat.maphieuxuat = chitietphieuxuat.maphieuxuat and machitietphieuxuat = New.machitietphieuxuat;
+END$$
+ DELIMITER ;
+ 
+DROP TRIGGER IF EXISTS update_ctpx_px;
+DELIMITER $$
+ CREATE TRIGGER update_ctpx_px
+ after update ON chitietphieuxuat
+ FOR EACH ROW
+BEGIN
+ update phieuxuat,chitietphieuxuat
+SET
+ phieuxuat.tongtien = phieuxuat.tongtien - (old.dongia*old.soluong) + (chitietphieuxuat.dongia*chitietphieuxuat.soluong)
+ where phieuxuat.maphieuxuat = chitietphieuxuat.maphieuxuat and machitietphieuxuat = New.machitietphieuxuat;
+END$$
+ DELIMITER ;
+ 
+DROP TRIGGER IF EXISTS delete_ctpx_px;
+DELIMITER $$
+ CREATE TRIGGER delete_ctpx_px
+ before delete ON chitietphieuxuat
+ FOR EACH ROW
+BEGIN
+ update phieuxuat,chitietphieuxuat
+SET
+ phieuxuat.tongtien = phieuxuat.tongtien - (old.dongia*old.soluong)
+ where phieuxuat.maphieuxuat = chitietphieuxuat.maphieuxuat and machitietphieuxuat = old.machitietphieuxuat;
+END$$
+ DELIMITER ;
+-- TRIGER CHO CHI TIET PHIEU XUAT => + TONGTIEN CHO PHIEU XUAT
 
 -- NOTE 1: Xoa bang tai khoan 
 -- NOTE 2: Them truong trang thai vao hoa don (varchar) de nhan vien xac nhan don hang
@@ -368,8 +447,8 @@ insert into chitietgiohang(magiohang,soluong,masp) values ('kh02',4,'sp02');
 insert into hoadon(diachi,ghichu,machinhanh,mahoadon,makh,masukien,ngaytao,sdt,tenhoadon,trangthai,tongtien) values ("3/5/45 Kieu son hp","Goi dien bao trc","cn01","hd01","kh01","sk01","2021-2-2","0528455877","Hoa don mua hang","Xac nhan",0);
 insert into hoadon(diachi,ghichu,machinhanh,mahoadon,makh,masukien,ngaytao,sdt,tenhoadon,trangthai,tongtien) values ("3/5/45 Van cao hp","Goi dien bao trc","cn02","hd02","kh02","sk02","2021-2-2","05284558888","Hoa don mua hang 02","Chua Xac nhan",0);
 
-insert into chitiethoadon(dongia,mahoadon,masp,soluong) values (400,"hd01","sp01",4);
-insert into chitiethoadon(dongia,mahoadon,masp,soluong) values (400,"hd02","sp02",5);
+insert into chitiethoadon(dongia,mahoadon,masp,soluong) values (500,"hd01","sp01",2);
+insert into chitiethoadon(dongia,mahoadon,masp,soluong) values (500,"hd02","sp02",2);
 
 insert into phieuxuat (machinhanh,maphieuxuat,manv,ngayxuat,tenphieuxuat,tongtien) values ("cn01","px01","nv01","2021-02-02","Xuat hang so 01",40000);
 insert into phieuxuat (machinhanh,maphieuxuat,manv,ngayxuat,tenphieuxuat,tongtien) values ("cn02","px02","nv02","2021-02-02","Xuat hang so 02",450000);
@@ -382,3 +461,4 @@ insert into phieutrahang(maphieutrahang,mahoadon,ngaytra,tongtien) values ("pth0
 
 insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth01",1,"sp01",400);
 insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth02",1,"sp02",500);
+
