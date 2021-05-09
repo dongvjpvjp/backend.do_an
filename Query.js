@@ -520,7 +520,7 @@ module.exports = {
   },
   UpdateCTHD: (req, res) => {
     let { masp, soluong, mahoadon, dongia, machitiethoadon } = req.body;
-    let sql = `UPDATE chitiethoadon SET masp= '${masp}',soluong=${soluong},dongia=${dongia} WHERE machitiethoadon=${machitiethoadon} and mahoadon='${mahoadon}';`
+    let sql = `UPDATE doan.chitiethoadon SET masp='${masp}',soluong=${soluong},dongia=${dongia} WHERE machitiethoadon=${machitiethoadon} and mahoadon='${mahoadon}'`
     QueryData(req, res, sql);
   },
   DeleteCTHD: (req, res) => {

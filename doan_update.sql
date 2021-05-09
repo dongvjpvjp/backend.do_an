@@ -236,7 +236,7 @@ DELIMITER $$
 BEGIN
  update hoadon,chitiethoadon
 SET
- hoadon.tongtien = hoadon.tongtien - (old.dongia*old.soluong) + (chitiethoadon.dongia*chitiethoadon*chitiethoadon.soluong)
+ hoadon.tongtien = hoadon.tongtien - (old.dongia*old.soluong) + (chitiethoadon.dongia*chitiethoadon.soluong)
  where hoadon.mahoadon = chitiethoadon.mahoadon and machitiethoadon=New.machitiethoadon;
 END$$
  DELIMITER ;
@@ -389,6 +389,11 @@ END$$
 -- Note12: Them truong nganquy trong bang chi nhanh, them phieunhan, su dung de nhan tien (+ tien cho cac chi nhanh), phieuchi se tru tien cua cac chi nhanh = trigger
 -- Note 13: Xoa manhanvien trong sanpham,Xoa NCC va chi nhanh trong hanghoa, them mancc trong chitietphieunhap, them makho trong chitietphieuxuat, doi khoiluong => soluong va xoa dongia trong chitietsp
 -- Note 14: Them tongtien vao hoadon, phieutrahang
+
+-- QLBH: QL KH /QL Hóa đơn / Hóa đơn chi tiết / QL Phiếu trả hàng / phiếu trả hàng chi tiết / Xem sự kiện
+-- QLK: Hàng hóa / Nhập hàng / xuất hàng
+-- QLCN: Xem hóa đơn, hóa đơn CT, phiếu trả hàng, trả hàng chi tiết/QLNV, QL chi tiêu, QL vốn, ql sự kiện/ QL Điểm danh NV / Xem doanh thu
+-- QLT: QL chi nhánh, QL NCC, QL Kho, QL SP, QLNV, Xem hóa đơn, hóa đơn CT, phiếu trả hang, trả hàng chi tiết / Xem doanh thu
 
 -- CSDL mau: 
 insert into sukien(chietkhau,tungay,denngay,masukien,noidung,tensukien) values(8,"2020-04-20","2021-04-21","sk01","Su kien 01 chiet khau 8% tong hoa don","Su kien thang 4");
