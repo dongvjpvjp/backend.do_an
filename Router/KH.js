@@ -12,6 +12,7 @@ const Query = require("../Query");
 // })
 
 router.get("/GetInfo/:makh",Query.GetInfo);
+router.get("/SearchInfo/:makh",Query.SearchInfo);
 router.get("/GetAllInfo",Query.GetAllInfo);
 router.put("/UpdateInfo",Query.UpdateInfo);
 router.delete("/DeleteInfo/:makh",Query.DeleteInfo);

@@ -467,3 +467,5 @@ insert into phieutrahang(maphieutrahang,mahoadon,ngaytra,tongtien) values ("pth0
 insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth01",1,"sp01",400);
 insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth02",1,"sp02",500);
 
+
+

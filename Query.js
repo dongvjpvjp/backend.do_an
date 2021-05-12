@@ -182,6 +182,10 @@ module.exports = {
     csql = `Select * from sanpham where masp = '${req.params.masp}';`
     GetData(req, res, csql);
   },
+  SearchSanPham: (req, res) => {
+    csql = `Select * from sanpham where masp Like '%${req.params.masp}%';`
+    GetData(req, res, csql);
+  },
   UpdateSanPham: (req, res) => {  
 
     let { masp,anhsp,giaban,tensp,maloaisp, noidung, trangthai } = req.body;
@@ -249,6 +253,10 @@ module.exports = {
     csql = `Select * from chitietsp where machitietsp =${req.params.machitietsp};`
     GetData(req, res, csql);
   },
+  SearchCTSanPham: (req, res) => {
+    csql = `Select * from chitietsp where machitietsp Like '%${req.params.machitietsp}%';`
+    GetData(req, res, csql);
+  },
   GetAllCTSanPham: (req, res) => {
     csql = `Select * from chitietsp where masp ='${req.params.masp}';`
     GetData(req, res, csql);
@@ -276,6 +284,10 @@ module.exports = {
     csql = `Select * from hanghoa where mahh = '${req.params.mahh}';`
     GetData(req, res, csql);
   },
+  SearchHH: (req, res) => {
+    csql = `Select * from hanghoa where mahh Like '%${req.params.mahh}%';`
+    GetData(req, res, csql);
+  },
   UpdateHH: (req, res) => {
     // create table hanghoa(gianhap float,mahh varchar(255) primary key not null,makho varchar(255), constraint fk_hanghoa_kho foreign key (makho) references kho(makho),maloaihh varchar(255),ngaynhap datetime,soluong int,tenhh varchar(255),donvitinh varchar(255));
 
@@ -300,6 +312,10 @@ module.exports = {
   },
   GetInfo: (req, res) => {
     csql = `Select * from khachhang where makh = '${req.params.makh}';`
+    GetData(req, res, csql);
+  },
+  SearchInfo: (req, res) => {
+    csql = `Select * from khachhang where makh Like '%${req.params.makh}%';`
     GetData(req, res, csql);
   },
   UpdateInfo: (req, res) => {
@@ -393,12 +409,20 @@ module.exports = {
     csql = `Select * from hoadon where mahoadon = '${req.params.mahoadon}';`
     GetData(req, res, csql);
   },
+  SearchHD: (req, res) => {
+    csql = `Select * from hoadon where mahoadon Like '%${req.params.mahoadon}%';`
+    GetData(req, res, csql);
+  },
   GetHDKH: (req, res) => {
     csql = `Select * from hoadon where makh = '${req.params.makh}';`
     GetData(req, res, csql);
   },
   GetCTHD: (req, res) => {
     csql = `select machitiethoadon,hoadon.mahoadon,tensp,chitiethoadon.masp,chitiethoadon.soluong,chitiethoadon.dongia from hoadon,chitiethoadon,sanpham where machitiethoadon=${req.params.machitiethoadon} and hoadon.mahoadon = chitiethoadon.mahoadon and sanpham.masp = chitiethoadon.masp;`;
+    GetData(req, res, csql);
+  },
+  SearchCTHD: (req, res) => {
+    csql = `select machitiethoadon,hoadon.mahoadon,tensp,chitiethoadon.masp,chitiethoadon.soluong,chitiethoadon.dongia from hoadon,chitiethoadon,sanpham where machitiethoadon Like '%${req.params.machitiethoadon}%' and hoadon.mahoadon = chitiethoadon.mahoadon and sanpham.masp = chitiethoadon.masp;`;
     GetData(req, res, csql);
   },
   GetAllCTHD: (req, res) => {
@@ -537,6 +561,10 @@ module.exports = {
     csql = `Select * from phieutrahang where maphieutrahang = '${req.params.maphieutrahang}';`
     GetData(req, res, csql);
   },
+  SearchPhieuTraHang: (req, res) => {
+    csql = `Select * from phieutrahang where maphieutrahang Like '%${req.params.maphieutrahang}%';`
+    GetData(req, res, csql);
+  },
   UpdatePhieuTraHang: (req, res) => {  
     let {maphieutrahang,mahoadon,ngaytra} = req.body;
     let sql = `UPDATE phieutrahang SET mahoadon='${mahoadon}',ngaytra='${ngaytra}' WHERE maphieutrahang='${maphieutrahang}';`
@@ -603,6 +631,10 @@ module.exports = {
     csql = `Select * from chitietphieutrahang where maphieutrahangchitiet =${req.params.maphieutrahangchitiet};`
     GetData(req, res, csql);
   },
+  SearchCTPhieuTraHang: (req, res) => {
+    csql = `Select * from chitietphieutrahang where maphieutrahangchitiet Like '%${req.params.maphieutrahangchitiet}%';`
+    GetData(req, res, csql);
+  },
   GetAllCTPhieuTraHang: (req, res) => {
     csql = `Select * from chitietphieutrahang where maphieutrahang ='${req.params.maphieutrahang}';`
     GetData(req, res, csql);
@@ -629,6 +661,10 @@ module.exports = {
   },
   GetPhieuNhap: (req, res) => {
     csql = `Select * from phieunhap where maphieunhap = '${req.params.maphieunhap}';`
+    GetData(req, res, csql);
+  },
+  SearchPhieuNhap: (req, res) => {
+    csql = `Select * from phieunhap where maphieunhap Like '%${req.params.maphieunhap}%';`
     GetData(req, res, csql);
   },
   UpdatePhieuNhap: (req, res) => {
@@ -695,6 +731,10 @@ module.exports = {
     csql = `Select * from chitietphieunhap where machitietphieunhap =${req.params.machitietphieunhap};`
     GetData(req, res, csql);
   },
+  SearchCTPhieuNhap: (req, res) => {
+    csql = `Select * from chitietphieunhap where machitietphieunhap Like '%${req.params.machitietphieunhap}%';`
+    GetData(req, res, csql);
+  },
   GetAllCTPhieuNhap: (req, res) => {
     csql = `Select * from chitietphieunhap where maphieunhap = '${req.params.maphieunhap}';`
     GetData(req, res, csql);
@@ -721,6 +761,10 @@ module.exports = {
   },
   GetPhieuXuat: (req, res) => {
     csql = `Select * from phieuxuat where maphieuxuat = '${req.params.maphieuxuat}';`
+    GetData(req, res, csql);
+  },
+  SearchPhieuXuat: (req, res) => {
+    csql = `Select * from phieuxuat where maphieuxuat Like '%${req.params.maphieuxuat}%';`
     GetData(req, res, csql);
   },
   UpdatePhieuXuat: (req, res) => {  
@@ -787,6 +831,10 @@ module.exports = {
     csql = `Select * from chitietphieuxuat where machitietphieuxuat =${req.params.machitietphieuxuat};`
     GetData(req, res, csql);
   },
+  SearchCTPhieuXuat: (req, res) => {
+    csql = `Select * from chitietphieuxuat where machitietphieuxuat Like '%${req.params.machitietphieuxuat}%';`
+    GetData(req, res, csql);
+  },
   GetAllCTPhieuXuat: (req, res) => {
     csql = `Select * from chitietphieuxuat where maphieuxuat ='${req.params.maphieuxuat}';`
     GetData(req, res, csql);
@@ -815,6 +863,10 @@ module.exports = {
     csql = `Select * from phieuchitien where maphieuchitien = '${req.params.maphieuchitien}';`
     GetData(req, res, csql);
   },
+  SearchPhieuChiTien: (req, res) => {
+    csql = `Select * from phieuchitien where maphieuchitien Like '%${req.params.maphieuchitien}%';`
+    GetData(req, res, csql);
+  },
   UpdatePhieuChiTien: (req, res) => {
     let { maphieuchitien,manv,ngaychi,noidung,sotienchi,machinhanh} = req.body;
     let sql = `UPDATE phieuchitien SET manv= '${manv}',ngaychi='${ngaychi}',noidung='${noidung}',sotienchi=${sotienchi},machinhanh='${machinhanh}' WHERE maphieuchitien='${maphieuchitien}';`
@@ -836,6 +888,10 @@ module.exports = {
   },
   GetPhieuNhanTien: (req, res) => {
     csql = `Select * from phieunhantien where maphieunhantien = '${req.params.maphieunhantien}';`
+    GetData(req, res, csql);
+  },
+  SearchPhieuNhanTien: (req, res) => {
+    csql = `Select * from phieunhantien where maphieunhantien Like '%${req.params.maphieunhantien}%';`
     GetData(req, res, csql);
   },
   UpdatePhieuNhanTien: (req, res) => {
@@ -863,6 +919,10 @@ module.exports = {
   },
   GetInfoNV: (req, res) => {
     csql = `Select * from nhanvien where manv = '${req.params.manv}';`
+    GetData(req, res, csql);
+  },
+  SearchInfoNV: (req, res) => {
+    csql = `Select * from nhanvien where manv Like '%${req.params.manv}%';`
     GetData(req, res, csql);
   },
   UpdateInfoNV: (req, res) => {
@@ -970,6 +1030,10 @@ module.exports = {
     csql = `Select * from nhacc where mancc = '${req.params.mancc}';`
     GetData(req, res, csql);
   },
+  SearchNCC: (req, res) => {
+    csql = `Select * from nhacc where mancc Like '%${req.params.mancc}%';`
+    GetData(req, res, csql);
+  },
   UpdateNCC: (req, res) => {
     let { ghichu, tenncc, mancc } = req.body;
     let sql = `UPDATE nhacc SET ghichu= '${ghichu}',tenncc='${tenncc}' WHERE mancc='${mancc}';`
@@ -991,6 +1055,10 @@ module.exports = {
   },
   GetSK: (req, res) => {
     csql = `Select * from sukien where masukien = '${req.params.masukien}';`
+    GetData(req, res, csql);
+  },
+  SearchSK: (req, res) => {
+    csql = `Select * from sukien where masukien Like '%${req.params.masukien}%';`
     GetData(req, res, csql);
   },
   UpdateSK: (req, res) => {
@@ -1017,6 +1085,10 @@ module.exports = {
     csql = `Select * from chinhanh where machinhanh = '${req.params.machinhanh}';`
     GetData(req, res, csql);
   },
+  SearchChinanh: (req, res) => {
+    csql = `Select * from chinhanh where machinhanh Like '%${req.params.machinhanh}%';`
+    GetData(req, res, csql);
+  },
   UpdateChinhanh: (req, res) => {
 
     let { machinhanh, sdt, tenchinhanh, gmail, diachi} = req.body;
@@ -1039,6 +1111,10 @@ module.exports = {
   },
   GetKho: (req, res) => {
     csql = `Select * from kho where makho = '${req.params.makho}';`
+    GetData(req, res, csql);
+  },
+  SearchKho: (req, res) => {
+    csql = `Select * from kho where makho Like '%${req.params.makho}%';`
     GetData(req, res, csql);
   },
   UpdateKho: (req, res) => {
@@ -1096,4 +1172,36 @@ module.exports = {
 
 
   // CAC API VOI NHAN VIEN (CAP NHAT TT KH, LAP HOA DON => DONE ABOVE)
+
+  GetDTYear:(req,res)=>{
+
+    csql = `SELECT sum(hoadon.tongtien) as tongtien, count(hoadon.mahoadon) as sohoadon FROM HOADON WHERE year(hoadon.ngaytao) =${req.params.year}  and hoadon.machinhanh='${req.params.machinhanh}';`
+    GetData(req, res, csql);
+  },
+  GetDTMonth:(req,res)=>{
+
+    csql = `SELECT sum(hoadon.tongtien) as tongtien, count(hoadon.mahoadon) as sohoadon FROM HOADON WHERE month(hoadon.ngaytao) =${req.params.month} and year(hoadon.ngaytao) =${req.params.year} and hoadon.machinhanh='${req.params.machinhanh}';`
+    GetData(req, res, csql);
+  },
+  GetDTDay:(req,res)=>{
+
+    csql = `SELECT sum(hoadon.tongtien) as tongtien, count(hoadon.mahoadon) as sohoadon FROM HOADON WHERE day(hoadon.ngaytao) =${req.params.day} and month(hoadon.ngaytao) =${req.params.month} and year(hoadon.ngaytao) =${req.params.year} and hoadon.machinhanh='${req.params.machinhanh}';`
+    GetData(req, res, csql);
+  },
+  GetAllDTYear:(req,res)=>{
+
+    csql = `SELECT sum(hoadon.tongtien) as tongtien, count(hoadon.mahoadon) as sohoadon FROM HOADON WHERE year(hoadon.ngaytao) =${req.params.year} ;`
+    GetData(req, res, csql);
+  },
+  GetAllDTMonth:(req,res)=>{
+
+    csql = `SELECT sum(hoadon.tongtien) as tongtien, count(hoadon.mahoadon) as sohoadon FROM HOADON WHERE month(hoadon.ngaytao) =${req.params.month} and year(hoadon.ngaytao) =${req.params.year} ;`
+    GetData(req, res, csql);
+  },
+  GetAllDTDay:(req,res)=>{
+
+    csql = `SELECT sum(hoadon.tongtien) as tongtien, count(hoadon.mahoadon) as sohoadon FROM HOADON WHERE day(hoadon.ngaytao) =${req.params.day} and month(hoadon.ngaytao) =${req.params.month} and year(hoadon.ngaytao) =${req.params.year};`
+    GetData(req, res, csql);
+  }
+  // Cac API DOANH THU
 };
