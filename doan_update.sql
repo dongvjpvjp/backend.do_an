@@ -374,6 +374,45 @@ SET
 END$$
  DELIMITER ;
 -- TRIGER CHO CHI TIET PHIEU XUAT => + TONGTIEN CHO PHIEU XUAT
+DROP TRIGGER IF EXISTS insert_cthd_hd;
+DELIMITER $$
+ CREATE TRIGGER insert_cthd_hd
+ after insert ON chitiethoadon
+ FOR EACH ROW
+BEGIN
+ update hoadon,chitiethoadon,sukien
+SET
+ hoadon.tongtien = hoadon.tongtien + ((chitiethoadon.dongia-chitiethoadon.dongia*(sukien.chietkhau/100))*chitiethoadon.soluong)
+ where hoadon.mahoadon = chitiethoadon.mahoadon and machitiethoadon=New.machitiethoadon and hoadon.masukien = sukien.masukien;
+END$$
+ DELIMITER ;
+ 
+DROP TRIGGER IF EXISTS update_cthd_hd;
+DELIMITER $$
+ CREATE TRIGGER update_cthd_hd
+ after update ON chitiethoadon
+ FOR EACH ROW
+BEGIN
+ update hoadon,chitiethoadon,sukien
+SET
+ hoadon.tongtien = hoadon.tongtien - ((old.dongia-old.dongia*(sukien.chietkhau/100))*old.soluong) + ((chitiethoadon.dongia-chitiethoadon.dongia*(sukien.chietkhau/100))*chitiethoadon.soluong)
+ where hoadon.mahoadon = chitiethoadon.mahoadon and machitiethoadon=New.machitiethoadon and hoadon.masukien = sukien.masukien;
+END$$
+ DELIMITER ;
+ 
+DROP TRIGGER IF EXISTS delete_cthd_hd;
+DELIMITER $$
+ CREATE TRIGGER delete_cthd_hd
+ before delete ON chitiethoadon
+ FOR EACH ROW
+BEGIN
+ update hoadon,chitiethoadon,sukien
+SET
+ hoadon.tongtien = hoadon.tongtien - ((old.dongia-old.dongia*(sukien.chietkhau/100))*old.soluong)
+ where hoadon.mahoadon = chitiethoadon.mahoadon and machitiethoadon=old.machitiethoadon and sukien.masukien = hoadon.masukien;
+END$$
+ DELIMITER ;
+-- Sua lai TRIGER CHO CHI TIET HOA DON => + TONGTIEN CHO HOA DON (Them chiet khau % cua su kien)
 
 -- NOTE 1: Xoa bang tai khoan 
 -- NOTE 2: Them truong trang thai vao hoa don (varchar) de nhan vien xac nhan don hang
@@ -468,4 +507,4 @@ insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth
 insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth02",1,"sp02",500);
 
 
-
+select * from hoadon
