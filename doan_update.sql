@@ -440,11 +440,12 @@ insert into sukien(chietkhau,tungay,denngay,masukien,noidung,tensukien) values(5
 
 insert into chinhanh (machinhanh, sdt, tenchinhanh, gmail,diachi, nganquy) values("cn01","0528455877","Chi nhanh Xuan Dong","dong74225@st.vimaru.edu.vn","Kieu Son, Hai Phong",0);
 insert into chinhanh (machinhanh, sdt, tenchinhanh, gmail,diachi, nganquy) values("cn02","0373664313","Chi nhanh JPV","dongxuannguyen@st.vimaru.edu.vn","Kieu Son, Hai Phong, Viet Nam",0);
+insert into chinhanh (machinhanh, sdt, tenchinhanh, gmail,diachi, nganquy) values("cntong","0373664313","Chi nhanh Tong","dongxuannguyen@st.vimaru.edu.vn","Kieu Son, Hai Phong, Viet Nam",0);
 
 insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/kHCk6eM.jpeg",1,"Nguyen Xuan Dong","nv01","123456","cn01","1999-05-09","0123456789","0528455877","Hai Phong Viet Nam","dong74225@st.vimaru.edu.vn");
 insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/ps6GwPg.jpeg",2,"GIRL","nv02","123456","cn02","1999-03-24","01234567889","0528455877","Kieu Son Hai Phong Viet Nam","daibeo1997@st.vimaru.edu.vn");
 insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/kHCk6eM.jpeg",3,"Nguyen Xuan Dong","nv03","123456","cn01","1999-05-09","0123456789","0528455877","Hai Phong Viet Nam","dong74225@st.vimaru.edu.vn");
-insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/ps6GwPg.jpeg",4,"GIRL","nv04","123456","cn02","1999-03-24","01234567889","0528455877","Kieu Son Hai Phong Viet Nam","daibeo1997@st.vimaru.edu.vn");
+insert into nhanvien(anhnv,machucvu,tennv,manv,matkhau,machinhanh,ngaysinh,cmnd,sdt,diachi,email) values ("https://i.imgur.com/ps6GwPg.jpeg",4,"GIRL","nv04","123456","cntong","1999-03-24","01234567889","0528455877","Kieu Son Hai Phong Viet Nam","daibeo1997@st.vimaru.edu.vn");
 
 insert into diemdanhnv (madiemdanhnv,manv,ngaylam,ngaydimuon,ngaynghi) values("T1","nv01",15,2,4);
 insert into diemdanhnv (madiemdanhnv,manv,ngaylam,ngaydimuon,ngaynghi) values("T2","nv02",25,5,7);
@@ -507,4 +508,6 @@ insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth
 insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth02",1,"sp02",500);
 
 
-select * from hoadon
+select chitietphieunhap.mahh,chitietphieunhap.mancc,chitietphieunhap.soluong,chitietphieunhap.dongia,phieunhap.manv,phieunhap.makho,phieunhap.ngaynhap from phieunhap,chitietphieunhap where phieunhap.maphieunhap=chitietphieunhap.maphieunhap and ngaynhap between '2020-01-01' and '2021-12-12';
+select * from hoadon;
+select chitietphieuxuat.mahh,chitietphieuxuat.makho,chitietphieuxuat.soluong,chitietphieuxuat.dongia,phieuxuat.manv,phieuxuat.machinhanh,phieuxuat.ngayxuat from phieuxuat,chitietphieuxuat where phieuxuat.maphieuxuat=chitietphieuxuat.maphieuxuat and ngayxuat between '2020-01-01' and '2021-12-12'

@@ -87,4 +87,8 @@ router.put("/UpdateCTPhieuTraHang",Query.UpdateCTPhieuTraHang);
 router.delete("/DeleteCTPhieuTraHang/:maphieutrahangchitiet",Query.DeleteCTPhieuTraHang);
 
 //Phieu tra hang
+router.post("/ThongKePN",Query.ThongKePN);
+router.post("/ThongKePX",Query.ThongKePX);
+
+//THONG KE PHIEU NHAP PHIEU XUAT
 module.exports = router;

@@ -1202,6 +1202,17 @@ module.exports = {
 
     csql = `SELECT sum(hoadon.tongtien) as tongtien, count(hoadon.mahoadon) as sohoadon FROM HOADON WHERE day(hoadon.ngaytao) =${req.params.day} and month(hoadon.ngaytao) =${req.params.month} and year(hoadon.ngaytao) =${req.params.year};`
     GetData(req, res, csql);
-  }
+  },
   // Cac API DOANH THU
+  ThongKePN:(req,res)=>{
+    let { from,to } = req.body;
+    csql=`select chitietphieunhap.mahh,chitietphieunhap.mancc,chitietphieunhap.soluong,chitietphieunhap.dongia,phieunhap.manv,phieunhap.makho,phieunhap.ngaynhap from phieunhap,chitietphieunhap where phieunhap.maphieunhap=chitietphieunhap.maphieunhap and ngaynhap between '${from}' and '${to}'`
+    GetData(req,res,csql);
+  },
+  ThongKePX:(req,res)=>{
+    let { from,to } = req.body;
+    csql=`select chitietphieuxuat.mahh,chitietphieuxuat.makho,chitietphieuxuat.soluong,chitietphieuxuat.dongia,phieuxuat.manv,phieuxuat.machinhanh,phieuxuat.ngayxuat from phieuxuat,chitietphieuxuat where phieuxuat.maphieuxuat=chitietphieuxuat.maphieuxuat and ngayxuat between '${from}' and '${to}'`
+    GetData(req,res,csql);
+  },
+  //Cac API THONG KE PHIEU NHAP VA PHIEU XUAT
 };
