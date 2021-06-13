@@ -89,6 +89,8 @@ router.delete("/DeleteCTPhieuTraHang/:maphieutrahangchitiet",Query.DeleteCTPhieu
 //Phieu tra hang
 router.post("/ThongKePN",Query.ThongKePN);
 router.post("/ThongKePX",Query.ThongKePX);
+router.post("/ThongKePNT",Query.ThongKePNT);
+router.post("/ThongKePCT",Query.ThongKePCT);
 
-//THONG KE PHIEU NHAP PHIEU XUAT
+//THONG KE PHIEU NHAP PHIEU XUAT, PHIEU NHAN/CHI TIEN
 module.exports = router;

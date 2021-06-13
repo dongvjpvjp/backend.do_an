@@ -1214,5 +1214,15 @@ module.exports = {
     csql=`select chitietphieuxuat.mahh,chitietphieuxuat.makho,chitietphieuxuat.soluong,chitietphieuxuat.dongia,phieuxuat.manv,phieuxuat.machinhanh,phieuxuat.ngayxuat from phieuxuat,chitietphieuxuat where phieuxuat.maphieuxuat=chitietphieuxuat.maphieuxuat and ngayxuat between '${from}' and '${to}'`
     GetData(req,res,csql);
   },
+  ThongKePNT:(req,res)=>{
+    let { from,to } = req.body;
+    csql=`select * from phieunhantien where ngaynhan between '${from}' and '${to}'`
+    GetData(req,res,csql);
+  },
+  ThongKePCT:(req,res)=>{
+    let { from,to } = req.body;
+    csql=`select * from phieuchitien where ngaychi between '${from}' and '${to}'`
+    GetData(req,res,csql);
+  },
   //Cac API THONG KE PHIEU NHAP VA PHIEU XUAT
 };

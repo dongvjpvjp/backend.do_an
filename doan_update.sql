@@ -511,3 +511,5 @@ insert into chitietphieutrahang(maphieutrahang,soluong,masp,dongia) values ("pth
 select chitietphieunhap.mahh,chitietphieunhap.mancc,chitietphieunhap.soluong,chitietphieunhap.dongia,phieunhap.manv,phieunhap.makho,phieunhap.ngaynhap from phieunhap,chitietphieunhap where phieunhap.maphieunhap=chitietphieunhap.maphieunhap and ngaynhap between '2020-01-01' and '2021-12-12';
 select * from hoadon;
 select chitietphieuxuat.mahh,chitietphieuxuat.makho,chitietphieuxuat.soluong,chitietphieuxuat.dongia,phieuxuat.manv,phieuxuat.machinhanh,phieuxuat.ngayxuat from phieuxuat,chitietphieuxuat where phieuxuat.maphieuxuat=chitietphieuxuat.maphieuxuat and ngayxuat between '2020-01-01' and '2021-12-12'
+
+select 
